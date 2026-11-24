@@ -6,7 +6,9 @@ in for /output so the entry can be tested locally.
 
 Fails loudly if anything is off: the copy's size differs, its bytes
 differ from word.txt, the text is not 1-30 characters, it is only
-white space, or it is not exactly one word.
+white space, it is not exactly one word, or it carries leading or
+trailing white space (a stray newline would reach the judge as part
+of the entry, so the word must be exactly the word, nothing around it).
 
 Standard library only. No network, no randomness, no timestamps.
 """
@@ -34,6 +36,10 @@ def main() -> None:
         )
     if not text.strip():
         raise RuntimeError("entry must not be only white space")
+    if text != text.strip():
+        raise RuntimeError(
+            "entry must not have leading or trailing white space"
+        )
     if len(text.split()) != 1:
         raise RuntimeError("entry must be exactly one word")
 
